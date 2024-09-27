@@ -1,8 +1,8 @@
-import sruthi
 import argparse
 import tomli
 import yaml
 import pymarc
+import sruthi
 
 '''
 This script provides an example of how to used the forked version of the sruthi package

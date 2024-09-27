@@ -37,7 +37,6 @@ class XMLParser(object):
             "info:lc/xmlns/marcxchange-v1": None,
             "http://www.loc.gov/mods/v3": None,
             "http://www.loc.gov/standards/mods/v3/mods-3-6.xsd": None,
-            "http://www.loc.gov/standards/mods/v3/mods-3-6.xsd": None,
             "http://purl.org/dc/elements/1.1/": None,
             "http://www.expertisecentrumdavid.be/xmlschemas/isad.xsd": None,
             "http://www.w3.org/2001/XMLSchema-instance": None,

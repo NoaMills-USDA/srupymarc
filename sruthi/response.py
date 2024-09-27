@@ -6,6 +6,8 @@ import warnings
 from flatten_dict import flatten
 from . import xmlparse
 from . import errors
+import pymarc
+import io
 
 
 class Response(object):
@@ -44,6 +46,10 @@ class Response(object):
 
 
 class SearchRetrieveResponse(Response):
+    def __init__(self, data_loader, output_format):
+        self.output_format = output_format
+        super(SearchRetrieveResponse, self).__init__(data_loader)
+
     def __repr__(self):
         try:
             return (
@@ -66,6 +72,7 @@ class SearchRetrieveResponse(Response):
         self.count = self.maybe_int(
             self.xmlparser.find(xml, "./sru:numberOfRecords").text
         )
+        # Use output format to determine which version of _extract_records() to call
         self._extract_records(xml)
 
         next_start_record = self.xmlparser.find(xml, "./sru:nextRecordPosition").text
@@ -121,6 +128,23 @@ class SearchRetrieveResponse(Response):
         self._parse_content(xml)
 
     def _extract_records(self, xml):
+        if self.output_format == "dict":
+            return self._extract_records_dict(xml)
+        elif self.output_format == "pymarc":
+            return self._extract_records_pymarc(xml)
+        else:
+            raise ValueError(f"Output format not valid: {self.output_format}")
+
+    def _extract_records_pymarc(self, xml):
+        new_records = []
+        xml_recs = self.xmlparser.findall(xml, "./sru:records/sru:record")
+        for xml_rec in xml_recs:
+            marcxmlFile = io.BytesIO(self.xmlparser.tostring(xml_rec))
+            pymarc_record = pymarc.marcxml.parse_xml_to_array(marcxmlFile)[0]
+            new_records.append(pymarc_record)
+        self.records.extend(new_records)
+
+    def _extract_records_dict(self, xml):
         new_records = []
 
         xml_recs = self.xmlparser.findall(xml, "./sru:records/sru:record")
@@ -138,9 +162,10 @@ class SearchRetrieveResponse(Response):
         self.records.extend(new_records)
 
     def _tag_data(self, elem, parent):
+        # Receives an elementTree and a tag
+        # Returns a dict version of the tree from that tag's node
         if not elem:
             return None
-
         record_data = self.xmlparser.todict(elem, xml_attribs=True).get(parent)
         if not record_data:
             return None
@@ -153,18 +178,23 @@ class SearchRetrieveResponse(Response):
         record_data.pop("schemaLocation", None)
         record_data.pop("xmlns", None)
 
-        def leaf_reducer(k1, k2):
+        def leaf_reducer(_, k2):
             # only use key of leaf element
             return k2
 
         try:
-            record_data = flatten(record_data, reducer=leaf_reducer)
+            #print("Unflattened data:")
+            #pprint(record_data)
+            flattened_data = flatten(record_data, reducer=leaf_reducer)
+            #print("Flattened data:")
+            #pprint(flattened_data)
+            #print("Equality check: ", flattened_data == record_data)
         except ValueError:
             # if the keys of the leaf elements are not unique
             # the dict will not be flattened
             pass
 
-        return record_data
+        return flattened_data
 
     def _remove_namespace(self, elem):
         ns_pattern = re.compile("{.+}")

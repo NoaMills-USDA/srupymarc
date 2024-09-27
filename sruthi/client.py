@@ -14,12 +14,19 @@ class Client(object):
         record_schema=None,
         sru_version="1.2",
         session=None,
+        output_format=""
     ):
         self.url = url
         self.maximum_records = maximum_records
         self.sru_version = sru_version
         self.record_schema = record_schema
         self.session = session or requests.Session()
+        self.output_format = output_format
+        if self.output_format == "":  # no output format designated by user
+            self.output_format = "pymarc"
+        valid_formats = ["dict", "pymarc"]
+        if self.output_format not in valid_formats:
+            raise ValueError(f"Invalid output format: {self.output_format}")
 
     def searchretrieve(self, query, start_record=1):
         params = {
@@ -34,7 +41,8 @@ class Client(object):
             params["recordSchema"] = self.record_schema
 
         data_loader = DataLoader(self.url, self.session, params)
-        return response.SearchRetrieveResponse(data_loader)
+        # Input output_format parameter to response.SRR function below
+        return response.SearchRetrieveResponse(data_loader, self.output_format)
 
     def explain(self):
         params = {

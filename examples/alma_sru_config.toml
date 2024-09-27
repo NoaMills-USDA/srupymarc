@@ -7,7 +7,5 @@ max_records = 20
 url = "https://na91.alma.exlibrisgroup.com/view/sru/01NAL_INST"
 output_format = "pymarc"
 query1 = "alma.issn=1365-6937" # 2 records
-query2 = "alma.title=Biochemistry" # 141379 records
-query3 = "alma.creator=crossref" # 1 record
-query4 = "alma.all_for_ui=history" # 209483 records
-query5 = "alma.title=pothos" #46 records
+query2 = "alma.creator=crossref" # 1 record
+query3 = "alma.title=pothos" #46 records
