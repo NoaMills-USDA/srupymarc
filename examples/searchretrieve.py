@@ -1,7 +1,7 @@
-import sruthi
+import srupymarc
 
-records = sruthi.searchretrieve(
-    "https://suche.staatsarchiv.djiktzh.ch/SRU/", query="Zurich"
+records = srupymarc.searchretrieve(
+    "https://suche.staatsarchiv.djiktzh.ch/SRU/", query="Zurich", output_format="flatten"
 )
 print("SRU version:", records.sru_version)
 print("Count:", records.count)
@@ -14,3 +14,6 @@ for record in records:
     print(record["date"])
     print(record["extra"]["link"])  # extra record data is available at the 'extra' key
     print("")
+
+record = records[0]
+#print(record)

@@ -1,7 +1,7 @@
-from sruthi import Client
+from srupymarc import Client
 
 # create a new client and call explain()
-sru_client = Client("https://suche.staatsarchiv.djiktzh.ch/SRU/")
+sru_client = Client("https://suche.staatsarchiv.djiktzh.ch/SRU/", output_format="flatten")
 info = sru_client.explain()
 
 for name, details in info.schema.items():
@@ -15,7 +15,7 @@ except KeyError:
     print("Config `maximum_records` not available, keep original value")
 
 # get records for query
-records = sru_client.searchretrieve(query="Zürich")
+records = sru_client.searchretrieve(query="Zürich", output_format="flatten")
 
 # display 5 records
 print("")

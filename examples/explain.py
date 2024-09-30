@@ -1,5 +1,5 @@
 # make sure you have termcolor and yaml installed: pip install termcolor pyyaml
-import sruthi
+import srupymarc
 from termcolor import cprint
 import yaml
 
@@ -29,7 +29,7 @@ for endpoint in sru_endpoints:
     print_header(f"= {endpoint}")
     print_header("=")
     print_header(20 * "=")
-    info = sruthi.explain(endpoint)
+    info = srupymarc.explain(endpoint)
 
     print_title("Server:")
     dump(info.server)

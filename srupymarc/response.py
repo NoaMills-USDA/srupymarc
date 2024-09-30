@@ -72,7 +72,7 @@ class SearchRetrieveResponse(Response):
         self.count = self.maybe_int(
             self.xmlparser.find(xml, "./sru:numberOfRecords").text
         )
-        # Use output format to determine which version of _extract_records() to call
+
         self._extract_records(xml)
 
         next_start_record = self.xmlparser.find(xml, "./sru:nextRecordPosition").text
@@ -128,7 +128,7 @@ class SearchRetrieveResponse(Response):
         self._parse_content(xml)
 
     def _extract_records(self, xml):
-        if self.output_format == "dict":
+        if self.output_format == "flatten":
             return self._extract_records_dict(xml)
         elif self.output_format == "pymarc":
             return self._extract_records_pymarc(xml)
@@ -183,16 +183,11 @@ class SearchRetrieveResponse(Response):
             return k2
 
         try:
-            #print("Unflattened data:")
-            #pprint(record_data)
             flattened_data = flatten(record_data, reducer=leaf_reducer)
-            #print("Flattened data:")
-            #pprint(flattened_data)
-            #print("Equality check: ", flattened_data == record_data)
         except ValueError:
             # if the keys of the leaf elements are not unique
             # the dict will not be flattened
-            pass
+            return record_data
 
         return flattened_data
 

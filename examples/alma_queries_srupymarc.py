@@ -2,7 +2,7 @@ import argparse
 import tomli
 import yaml
 import pymarc
-import sruthi
+import srupymarc
 
 '''
 This script provides an example of how to used the forked version of the sruthi package
@@ -53,20 +53,39 @@ with open("alma_sru_config.toml", mode="rb") as fp:
 
 print("\nurl="+params["url"])
 
+# The pymarc package allows us to directly access the 'author' field of a record.
+# Here, we define a function to allow us to access the 'author' field of a flattened dict.
+
+def find_author(record: dict):
+    datafield = record['datafield']
+    for index, elem in enumerate(datafield):
+        if elem["tag"] == '100':
+            author_index = index
+            break
+    tag_100 = datafield[author_index]
+    subfield = tag_100['subfield']
+    if isinstance(subfield, list):
+        for index, elem in enumerate(subfield):
+            if elem["code"] == 'a':
+                author = elem["text"]
+                break
+    elif isinstance(subfield, dict):
+        author = subfield['text']
+    return author
+
 if(args.operation == "searchRetrieve"):
-    records = sruthi.searchretrieve(**params)
-    # Check type of returned object
-    print("Type check: ", isinstance(records[0], pymarc.record.Record))
+    records = srupymarc.searchretrieve(**params)
     for record in records:
         if isinstance(record, pymarc.record.Record):
             print("Record author: ", record.author)
         elif isinstance(record, dict):
-            print("Record keys: ", record.keys())
+            print("Record author: ", find_author(record))
 
 if (args.operation == "explain"):
-    info = sruthi.explain(**params)
+    info = srupymarc.explain(**params)
     print("Server: ", info.server)
     print("Index info:")
     dump(info.index)
+
 
 

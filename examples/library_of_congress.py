@@ -1,4 +1,4 @@
-import sruthi
+import srupymarc
 import sys
 
 LOC_BASE = "http://lx2.loc.gov:210/LCDB?"
@@ -7,7 +7,7 @@ LOC_BASE = "http://lx2.loc.gov:210/LCDB?"
 def loc_search(isbn, sru_base):
     loc_lcc = None
     try:
-        records = sruthi.searchretrieve(sru_base, query=isbn)
+        records = srupymarc.searchretrieve(sru_base, query=isbn, output_format="flatten")
         record = records[0]
         fields = record.get("datafield", [])
         for field in fields:

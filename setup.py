@@ -4,7 +4,7 @@ from codecs import open
 from setuptools import setup, find_packages
 import re
 
-with open('sruthi/__init__.py', 'r') as fd:
+with open('srupymarc/__init__.py', 'r') as fd:
     version = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]',
                         fd.read(), re.MULTILINE).group(1)
 
@@ -15,20 +15,20 @@ with open('README.md', 'r', encoding="utf-8") as f:
     long_description = f.read()
 
 setup(
-    name='sruthi',
+    name='srupymarc',
     packages=find_packages(),
     version=version,
-    install_requires=['requests', 'defusedxml', 'xmltodict', 'flatten-dict'],
+    install_requires=['requests', 'defusedxml', 'xmltodict', 'flatten-dict', 'pymarc'],
     description='SRU client for Python',
     long_description=long_description,
     long_description_content_type='text/markdown',
-    author='Stefan Oderbolz',
-    author_email='odi@metaodi.ch',
-    maintainer='Stefan Oderbolz',
-    maintainer_email='odi@metaodi.ch',
-    url='https://github.com/metaodi/sruthi',
+    author='Noa Mills',
+    author_email='noa.mills@usda.gov',
+    maintainer='Noa Mills',
+    maintainer_email='noa.mills@usda.gov',
+    url='https://github.com/NoaMillsUSDA-ARS/sruthi',
     download_url='https://github.com/metaodi/sruthi/archive/v%s.zip' % version,
-    keywords=['sru', 'search', 'retrieve', 'archive', 'library'],
+    keywords=['sru', 'search', 'retrieve', 'archive', 'library', 'marc', 'pymarc'],
     license='MIT',
     classifiers=[
         'License :: OSI Approved :: MIT License',

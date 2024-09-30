@@ -1,11 +1,12 @@
-import sruthi
+import srupymarc
 import csv
 import sys
 import traceback
 
-records = sruthi.searchretrieve(
+records = srupymarc.searchretrieve(
     "https://amsquery.stadt-zuerich.ch/SRU/",
     query="isad.reference = V.B.b.43.:1 AND isad.descriptionlevel = Dossier",
+    output_format="flatten"
 )
 
 try:

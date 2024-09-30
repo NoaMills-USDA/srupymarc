@@ -3,9 +3,8 @@ url = "https://na91.alma.exlibrisgroup.com/view/sru/01NAL_INST"
 
 [searchRetrieve]
 record_schema = "marcxml"
-max_records = 20
 url = "https://na91.alma.exlibrisgroup.com/view/sru/01NAL_INST"
-output_format = "pymarc"
+output_format = "flatten"
 query1 = "alma.issn=1365-6937" # 2 records
 query2 = "alma.creator=crossref" # 1 record
 query3 = "alma.title=pothos" #46 records

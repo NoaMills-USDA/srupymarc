@@ -1,11 +1,11 @@
-import sruthi
+import srupymarc
 from pprint import pprint
 
 # check supported schemas of server
 server_url = "https://services.dnb.de/sru/dnb"
 
-# create sruthi client
-client = sruthi.Client(server_url, record_schema="oai_dc", sru_version="1.1")
+# create srupymarc client
+client = srupymarc.Client(server_url, record_schema="oai_dc", sru_version="1.1")
 
 explain = client.explain()
 print(f"SRU version: {explain.sru_version}")
@@ -21,6 +21,6 @@ print("=")
 print(f"= Record with schema: {client.record_schema}")
 print("=")
 print(20 * "=")
-records = client.searchretrieve(query="Zurich")
+records = client.searchretrieve(query="Zurich", output_format="flatten")
 print(f"Total records: {records.count}")
 pprint(records[0])

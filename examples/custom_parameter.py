@@ -1,5 +1,5 @@
 import requests
-import sruthi
+import srupymarc
 from pprint import pprint
 
 
@@ -16,10 +16,10 @@ session.verify = False  # disable SSL verfications
 session.hooks["response"].append(print_url)  # add custom hook
 
 # pass custom session to client
-sru_client = sruthi.Client("https://jsru.kb.nl/sru", session=session)
+sru_client = srupymarc.Client("https://jsru.kb.nl/sru", session=session)
 
 # get records for query
-records = sru_client.searchretrieve(query="gruninger")
+records = sru_client.searchretrieve(query="gruninger", output_format="flatten")
 pprint(records)
 print("---")
 pprint(records[0])

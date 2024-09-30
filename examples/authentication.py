@@ -1,6 +1,6 @@
 import os
 import requests
-from sruthi import Client
+from srupymarc import Client
 
 # create authenticated session
 user = os.getenv("CATALOG_USER")

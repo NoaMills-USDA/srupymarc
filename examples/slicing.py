@@ -1,7 +1,8 @@
-import sruthi
+import srupymarc
 
-records = sruthi.searchretrieve(
-    "https://suche.staatsarchiv.djiktzh.ch/SRU/", query="Zurich"
+records = srupymarc.searchretrieve(
+    "https://suche.staatsarchiv.djiktzh.ch/SRU/", query="Zurich",
+    output_format="flatten"
 )
 
 print("records.count:", records.count)
