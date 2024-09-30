@@ -2,7 +2,13 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project follows [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## Srupymarc 2024-09-30
+- Created srupymarc fork sruthi repo
+- Allows users to specify the output format as either "flatten" for a flattened dict (as in original sruthi implementation), or "pymarc" for pymarc records
+- As interface and behavior is different from original sruthi package, we changed the package name to srupymarc to prevent conflicts
+
+
+## Original sruthi changelog
 
 ## [2.0.0] - 2023-07-06
 ### Added
