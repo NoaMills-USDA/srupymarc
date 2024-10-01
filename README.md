@@ -18,6 +18,7 @@ Currently only **SRU 1.1 and 1.2** is supported.
 
 * [Installation](#installation)
 * [Usage](#usage)
+* [Testing](#testing)
 
 ## Installation
 
@@ -61,3 +62,20 @@ For example, here is how you can query all the articles that include the term `p
 Note that when you request data through `sruthi`, it will first request the number of records specified by the `maximum_records` parameter. If you iterate through the returned records, then it will continuously make new API calls to request subsequent records until all the matches have been exhausted. Be wary of this if your query matches a large number of records.
 
 You can update the output format specification by modifying the `alma_sru_config.toml` file. Valid output format designations are "flatten" for flattened dictionaries, and "pymarc" for pymarc records.
+
+## Testing
+
+To run the unit tests, first create a virtual environment and install the packages needed for testing.
+
+```bash
+python -m venv testing_venv
+pip install test-requirements.txt
+pip install dist/srupymarc-2.0.0-py3-none-any.whl
+```
+
+Then, move to the `tests` directory and run the tests:
+
+```bash
+cd tests
+python -m pytest
+```

@@ -2,12 +2,12 @@ __version__ = "2.0.0"
 __all__ = ["client", "errors", "response", "xmlparse"]
 
 from .errors import (  # noqa
-    SruthiError,
+    SrupymarcError,
     ServerIncompatibleError,
     SruError,
     NoMoreRecordsError,
 )
-from .errors import SruthiWarning, WrongNamespaceWarning  # noqa
+from .errors import SrupymarcWarning, WrongNamespaceWarning  # noqa
 from .client import Client  # noqa
 
 

@@ -1,14 +1,14 @@
 import mock
 import unittest
 import os
-from sruthi import xmlparse
+from srupymarc import xmlparse
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
 
-class SruthiTestCase(unittest.TestCase):
+class SrupymarcTestCase(unittest.TestCase):
     def setUp(self):
-        self.patcher = mock.patch("sruthi.client.requests.Session")
+        self.patcher = mock.patch("srupymarc.client.requests.Session")
         self.session_mock = self.patcher.start()
         self._session_mock(self.session_mock)
 
@@ -37,7 +37,7 @@ class SruthiTestCase(unittest.TestCase):
         return (content, path)
 
 
-class ResponseTestCase(SruthiTestCase):
+class ResponseTestCase(SrupymarcTestCase):
     def _data_loader_mock(self, filenames):
         xmls = []
         for filename in filenames:

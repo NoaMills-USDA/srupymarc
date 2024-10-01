@@ -1,13 +1,13 @@
 import mock
-from sruthi_test import SruthiTestCase
-from sruthi.client import Client
-from sruthi.errors import WrongNamespaceWarning
+from srupymarc_test import SrupymarcTestCase
+from srupymarc.client import Client
+from srupymarc.errors import WrongNamespaceWarning
 
 
-class TestSruthiClient(SruthiTestCase):
+class TestSrupymarcClient(SrupymarcTestCase):
     def test_searchretrieve(self):
         client = Client("http://test.com/sru")
-        r = client.searchretrieve("Test-Query")
+        r = client.searchretrieve("Test-Query", output_format="flatten")
         self.assertEqual(r.count, 12)
         self.assertEqual(len(r.records), 12)
 
@@ -36,12 +36,12 @@ class TestSruthiClient(SruthiTestCase):
     def test_searchretrieve_warning(self):
         with self.assertWarns(WrongNamespaceWarning):
             client = Client("http://server-with-wrong-sru.namespace/sru/search")
-            r = client.searchretrieve("dc.title = Test")
+            r = client.searchretrieve("dc.title = Test", output_format="flatten")
             self.assertEqual(r.count, 10)
 
     def test_searchretrieve_slice(self):
         client = Client("http://test.com/sru/search")
-        r = client.searchretrieve("dc.title = Zürich")
+        r = client.searchretrieve("dc.title = Zürich", output_format="flatten")
         self.assertEqual(r.count, 10)
         self.assertEqual(len(r.records), 10)
 
@@ -75,7 +75,7 @@ class TestSruthiClient(SruthiTestCase):
     def test_searchretrieve_sru11(self):
         client = Client("http://my-param.com/sru", sru_version="1.1")
 
-        r = client.searchretrieve("test-query")
+        r = client.searchretrieve("test-query", output_format="flatten")
         self.assertEqual(r.count, 790)
         self.assertEqual(len(r.records), 12)
         self.session_mock.return_value.get.assert_called_once_with(
@@ -180,7 +180,7 @@ class TestSruthiClient(SruthiTestCase):
         client = Client("http://my-param.com/sru", maximum_records=111)
         self.assertEqual(client.maximum_records, 111)
 
-        client.searchretrieve("test-query")
+        client.searchretrieve("test-query", output_format="flatten")
         self.session_mock.return_value.get.assert_called_once_with(
             "http://my-param.com/sru",
             params={
@@ -196,7 +196,7 @@ class TestSruthiClient(SruthiTestCase):
         client = Client("http://my-param.com/sru", record_schema="dc")
         self.assertEqual(client.record_schema, "dc")
 
-        client.searchretrieve("test-query")
+        client.searchretrieve("test-query", output_format="flatten")
         self.session_mock.return_value.get.assert_called_once_with(
             "http://my-param.com/sru",
             params={
@@ -212,7 +212,7 @@ class TestSruthiClient(SruthiTestCase):
     def test_passing_start_record(self):
         client = Client("http://my-param.com/sru")
 
-        client.searchretrieve("test-query", start_record=10)
+        client.searchretrieve("test-query", start_record=10, output_format="flatten")
         self.session_mock.return_value.get.assert_called_once_with(
             "http://my-param.com/sru",
             params={
@@ -225,7 +225,7 @@ class TestSruthiClient(SruthiTestCase):
         )
 
 
-class TestSruthiClientNoSession:
+class TestSrupymarcClientNoSession:
     def test_passing_session(self, valid_xml):
         session_mock = mock.MagicMock(
             get=mock.MagicMock(return_value=mock.MagicMock(content=valid_xml))
@@ -233,7 +233,7 @@ class TestSruthiClientNoSession:
 
         client = Client("http://my-param.com/sru", session=session_mock)
 
-        client.searchretrieve("test-query")
+        client.searchretrieve("test-query", output_format="flatten")
         session_mock.get.assert_called_once_with(
             "http://my-param.com/sru",
             params={

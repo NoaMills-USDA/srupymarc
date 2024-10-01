@@ -1,5 +1,5 @@
-from sruthi_test import ResponseTestCase
-from sruthi.response import SearchRetrieveResponse, ExplainResponse
+from srupymarc_test import ResponseTestCase
+from srupymarc.response import SearchRetrieveResponse, ExplainResponse
 import os
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
@@ -8,7 +8,7 @@ __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file
 class TestSearchRetrieveResponse(ResponseTestCase):
     def test_response_single(self):
         data_loader = self._data_loader_mock(["response_single.xml"])
-        res = SearchRetrieveResponse(data_loader)
+        res = SearchRetrieveResponse(data_loader, "flatten")
 
         self.assertEqual(res.count, 1)
         self.assertEqual(res.__length_hint__(), 1)
@@ -17,7 +17,7 @@ class TestSearchRetrieveResponse(ResponseTestCase):
 
     def test_response_single_sru11(self):
         data_loader = self._data_loader_mock(["response_single_sru11.xml"])
-        res = SearchRetrieveResponse(data_loader)
+        res = SearchRetrieveResponse(data_loader, "flatten")
 
         self.assertEqual(res.count, 8985)
         self.assertEqual(res.__length_hint__(), 8985)
@@ -26,7 +26,7 @@ class TestSearchRetrieveResponse(ResponseTestCase):
 
     def test_response_multi(self):
         data_loader = self._data_loader_mock(["response_multiple_1.xml"])
-        res = SearchRetrieveResponse(data_loader)
+        res = SearchRetrieveResponse(data_loader, "flatten")
 
         self.assertEqual(res.count, 220)
         self.assertEqual(res.__length_hint__(), 220)
@@ -40,7 +40,7 @@ class TestSearchRetrieveResponse(ResponseTestCase):
             "response_multiple_3.xml",
         ]
         data_loader = self._data_loader_mock(filenames)
-        res = SearchRetrieveResponse(data_loader)
+        res = SearchRetrieveResponse(data_loader, "flatten")
 
         next_res = next(iter(res))
         self.assertIsNotNone(next_res)
@@ -59,7 +59,7 @@ class TestSearchRetrieveResponse(ResponseTestCase):
             "response_multiple_3.xml",
         ]
         data_loader = self._data_loader_mock(filenames)
-        res = SearchRetrieveResponse(data_loader)
+        res = SearchRetrieveResponse(data_loader, "flatten")
         self.assertEqual(data_loader.load.call_count, 1)
 
         self.assertIsNotNone(res[150])

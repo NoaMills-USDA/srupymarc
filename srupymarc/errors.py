@@ -1,37 +1,37 @@
-class SruthiError(Exception):
+class SrupymarcError(Exception):
     """
     General sruthi error class to provide a superclass for all other errors
     """
 
 
-class ServerIncompatibleError(SruthiError):
+class ServerIncompatibleError(SrupymarcError):
     """
     The error raised from sru.search/sru.explain when the server doesn't behave
     like a SRU endpoint.
     """
 
 
-class SruError(SruthiError):
+class SruError(SrupymarcError):
     """
     The error raised from sru.search/sru.explain when the SRU response contains
     an error
     """
 
 
-class NoMoreRecordsError(SruthiError):
+class NoMoreRecordsError(SrupymarcError):
     """
     This error is raised if all records have been loaded (or no records are
     present)
     """
 
 
-class SruthiWarning(Warning):
+class SrupymarcWarning(Warning):
     """
     General sruthi warning class to provide a superclass for all warnings
     """
 
 
-class WrongNamespaceWarning(SruthiWarning):
+class WrongNamespaceWarning(SrupymarcWarning):
     """
     A warning to indicate, that a server uses the wrong SRU namespace.
     """

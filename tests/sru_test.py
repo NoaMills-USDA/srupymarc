@@ -1,12 +1,13 @@
 import mock
-from sruthi_test import SruthiTestCase
-import sruthi
+from srupymarc_test import SrupymarcTestCase
+import srupymarc
 
 
-class TestSru(SruthiTestCase):
+class TestSru(SrupymarcTestCase):
     def test_searchretrieve(self):
-        r = sruthi.searchretrieve("http://test.com/sru/", "Test-Query")
-        self.assertIsInstance(r, sruthi.response.SearchRetrieveResponse)
+        r = srupymarc.searchretrieve("http://test.com/sru/", "Test-Query",
+                                     output_format="flatten")
+        self.assertIsInstance(r, srupymarc.response.SearchRetrieveResponse)
         self.session_mock.return_value.get.assert_called_once_with(
             "http://test.com/sru/",
             params={
@@ -19,10 +20,13 @@ class TestSru(SruthiTestCase):
         )
 
     def test_searchretrieve_with_maximum_records(self):
-        r = sruthi.searchretrieve(
-            "http://test.com/sru/", "Test-Query", maximum_records=100
+        r = srupymarc.searchretrieve(
+            "http://test.com/sru/",
+            "Test-Query",
+            maximum_records=100,
+            output_format="flatten"
         )
-        self.assertIsInstance(r, sruthi.response.SearchRetrieveResponse)
+        self.assertIsInstance(r, srupymarc.response.SearchRetrieveResponse)
         self.session_mock.return_value.get.assert_called_once_with(
             "http://test.com/sru/",
             params={
@@ -35,10 +39,11 @@ class TestSru(SruthiTestCase):
         )
 
     def test_searchretrieve_with_record_schema(self):
-        r = sruthi.searchretrieve(
-            "http://test.com/sru/", "Test-Query", record_schema="isad"
+        r = srupymarc.searchretrieve(
+            "http://test.com/sru/", "Test-Query", record_schema="isad",
+            output_format="flatten"
         )
-        self.assertIsInstance(r, sruthi.response.SearchRetrieveResponse)
+        self.assertIsInstance(r, srupymarc.response.SearchRetrieveResponse)
         self.session_mock.return_value.get.assert_called_once_with(
             "http://test.com/sru/",
             params={
@@ -52,8 +57,9 @@ class TestSru(SruthiTestCase):
         )
 
     def test_searchretrieve_with_start_record(self):
-        r = sruthi.searchretrieve("http://test.com/sru/", "Test-Query", start_record=10)
-        self.assertIsInstance(r, sruthi.response.SearchRetrieveResponse)
+        r = srupymarc.searchretrieve("http://test.com/sru/", "Test-Query",
+                                     start_record=10, output_format="flatten")
+        self.assertIsInstance(r, srupymarc.response.SearchRetrieveResponse)
         self.session_mock.return_value.get.assert_called_once_with(
             "http://test.com/sru/",
             params={
@@ -71,10 +77,11 @@ class TestSru(SruthiTestCase):
             get=mock.MagicMock(return_value=mock.MagicMock(content=content))
         )  # noqa
         # session_mock.verify = False
-        r = sruthi.searchretrieve(
-            "http://test.com/sru/", "Test-Query", session=session_mock
+        r = srupymarc.searchretrieve(
+            "http://test.com/sru/", "Test-Query", session=session_mock,
+            output_format="flatten"
         )
-        self.assertIsInstance(r, sruthi.response.SearchRetrieveResponse)
+        self.assertIsInstance(r, srupymarc.response.SearchRetrieveResponse)
         session_mock.get.assert_called_once_with(
             "http://test.com/sru/",
             params={
@@ -87,10 +94,10 @@ class TestSru(SruthiTestCase):
         )
 
     def test_explain(self):
-        info = sruthi.explain("http://test.com/sru/")
+        info = srupymarc.explain("http://test.com/sru/")
         self.assertEqual(info.sru_version, "1.2"),
         self.assertEqual(info["sru_version"], "1.2")
-        self.assertIsInstance(info, sruthi.response.AttributeDict)
+        self.assertIsInstance(info, srupymarc.response.AttributeDict)
         self.session_mock.return_value.get.assert_called_once_with(
             "http://test.com/sru/",
             params={
@@ -100,5 +107,5 @@ class TestSru(SruthiTestCase):
         )
 
     def test_client(self):
-        client = sruthi.Client("http://test.com/sru")
-        self.assertIsInstance(client, sruthi.client.Client)
+        client = srupymarc.Client("http://test.com/sru")
+        self.assertIsInstance(client, srupymarc.client.Client)
