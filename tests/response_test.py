@@ -1,11 +1,13 @@
 from srupymarc_test import ResponseTestCase
 from srupymarc.response import SearchRetrieveResponse, ExplainResponse
 import os
+import pymarc
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
 
 class TestSearchRetrieveResponse(ResponseTestCase):
+    # 1 file, 1 record, 1 query match, next record DNE
     def test_response_single(self):
         data_loader = self._data_loader_mock(["response_single.xml"])
         res = SearchRetrieveResponse(data_loader, "flatten")
@@ -70,9 +72,15 @@ class TestSearchRetrieveResponse(ResponseTestCase):
         self.assertIsInstance(res[205], dict)
         self.assertEqual(data_loader.load.call_count, 3)
 
+    def test_response_pymarc(self):
+        data_loader = self._data_loader_mock(["alma_response.xml"])
+        res = SearchRetrieveResponse(data_loader, "pymarc")
+        rec1 = res[0]
+        self.assertEqual(res.count, 46)
+        self.assertEqual(rec1["100"]["a"], "Nakazato, Tadashi")
 
 class TestExplainResponse(ResponseTestCase):
-    def test_response_simple(self):
+    def test_response_simple_flatten(self):
         data_loader = self._data_loader_mock(["test_explain.xml"])
         res = ExplainResponse(data_loader)
         self.assertEqual(data_loader.load.call_count, 1)
