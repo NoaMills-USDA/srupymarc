@@ -68,6 +68,11 @@ class SearchRetrieveResponse(Response):
     def _parse_content(self, xml):
         self._check_response_tag(xml, "searchRetrieveResponse")
 
+        record_schema = self.xmlparser.find(xml, ".//sru:recordSchema").text
+
+        if self.output_format == "pymarc" and record_schema != "marcxml":
+            raise ValueError(f'Invalid record schema for pymarc output format: {record_schema}. \n'
+                             f'Only marcxml schema is supported for pymarc output format.')
         self.sru_version = self.xmlparser.find(xml, "./sru:version").text
         self.count = self.maybe_int(
             self.xmlparser.find(xml, "./sru:numberOfRecords").text

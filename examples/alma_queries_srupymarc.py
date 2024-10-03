@@ -75,6 +75,7 @@ def find_author(record: dict):
 
 if(args.operation == "searchRetrieve"):
     records = srupymarc.searchretrieve(**params)
+    print("Type of record: ", type(records[0]))
     for record in records:
         if isinstance(record, pymarc.record.Record):
             print("Record author: ", record.author)
