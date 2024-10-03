@@ -41,7 +41,7 @@ The `searchRetrieve` operation can be performed as follows:
 ```python
 records = srupymarc.searchretrieve(url, query, sru_version="1.2", maximum_records=10, output_format="pymarc", record_schema)
 ```
-
+The `pymarc` output format is only valid with the `marcxml` record schema. Attempting to use an alternative record schema will yield a runtime error. The `flatten` output format, however, is schema-agnostic.
 ## Example script
 
 The `alma_queries_sruthi.py` script provides examples of how to use this package with the Alma SRU API. To run this example, first ensure you are connected to the VPN, so you can access the Alma API. Then, create a python venv as follows:

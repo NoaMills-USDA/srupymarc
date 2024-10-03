@@ -79,6 +79,11 @@ class TestSearchRetrieveResponse(ResponseTestCase):
         self.assertEqual(res.count, 46)
         self.assertEqual(rec1["100"]["a"], "Nakazato, Tadashi")
 
+    def test_pymarc_schema_error(self):
+        data_loader = self._data_loader_mock(["response_single.xml"])
+        with self.assertRaises(ValueError):
+            _ = SearchRetrieveResponse(data_loader, "pymarc")
+
 class TestExplainResponse(ResponseTestCase):
     def test_response_simple_flatten(self):
         data_loader = self._data_loader_mock(["test_explain.xml"])
