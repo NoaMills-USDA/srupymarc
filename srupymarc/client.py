@@ -4,6 +4,7 @@ import requests
 from . import errors
 from . import xmlparse
 from . import response
+import sys
 
 
 class Client(object):
@@ -68,10 +69,15 @@ class DataLoader(object):
         try:
             res = self.session.get(url, params=params)
             res.raise_for_status()
+        except requests.exceptions.ConnectTimeout as e:
+            sys.tracebacklimit = 0
+            print("SRU service unavailable. Check network connection.")
+            sys.exit(1)
         except requests.exceptions.HTTPError as e:
-            raise errors.SruthiError("HTTP error: %s" % e)
+            raise errors.SrupymarcError("HTTP error: %s" % e)
         except requests.exceptions.RequestException as e:
-            raise errors.SruthiError("Request error: %s" % e)
+            raise errors.SrupymarcError("Request error: %s" % e)
+
 
         return self.xmlparser.parse(res.content)
 
