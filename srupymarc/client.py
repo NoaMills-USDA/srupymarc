@@ -69,14 +69,18 @@ class DataLoader(object):
         try:
             res = self.session.get(url, params=params)
             res.raise_for_status()
-        except requests.exceptions.ConnectTimeout as e:
+        except (OSError, requests.exceptions.ConnectTimeout) as e:
             sys.tracebacklimit = 0
             print("SRU service unavailable. Check network connection.")
             sys.exit(1)
+
         except requests.exceptions.HTTPError as e:
             raise errors.SrupymarcError("HTTP error: %s" % e)
         except requests.exceptions.RequestException as e:
             raise errors.SrupymarcError("Request error: %s" % e)
+        except Exception as e:
+            print("Failed with exception: ", e)
+            sys.exit(1)
 
 
         return self.xmlparser.parse(res.content)
