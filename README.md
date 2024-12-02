@@ -69,7 +69,7 @@ To run the unit tests, first create a virtual environment and install the packag
 
 ```bash
 python -m venv testing_venv
-pip install test-requirements.txt
+pip install -r test-requirements.txt
 pip install dist/srupymarc-2.0.0-py3-none-any.whl
 ```
 
