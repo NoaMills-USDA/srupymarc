@@ -3,3 +3,4 @@ tomli
 pyyaml
 pymarc
 termcolor
+lxml

@@ -6,9 +6,10 @@ import requests
 url = "https://na91.alma.exlibrisgroup.com/view/sru/01NAL_INST"
 query_journal = 'alma.local_field_990="Journal repository"'
 query_article = "alma.issn=1365-6937"
-maximum_records = 10
+maximum_records = 1
 sru_version = "1.2"
-start_record = 0
+start_record = 8
+# Errors on records: 4, 5,
 
 params_journal = {
     "operation": "searchRetrieve",
