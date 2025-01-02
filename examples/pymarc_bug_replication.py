@@ -28,11 +28,9 @@ def _extract_records_pymarc(xml):
     new_records = []
     xml_recs = parser.findall(xml, "./sru:records/sru:record")
     for xml_rec in xml_recs:
-        print(i)
         marcxmlFile = io.BytesIO(parser.tostring(xml_rec))
         pymarc_record = pymarc.marcxml.parse_xml_to_array(marcxmlFile)[0]
         new_records.append(pymarc_record)
-        i += 1
     return new_records
 
 journal_records = _extract_records_pymarc(parsed_journal)
