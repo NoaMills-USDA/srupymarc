@@ -2,6 +2,7 @@ from srupymarc_test import ResponseTestCase
 from srupymarc.response import SearchRetrieveResponse, ExplainResponse
 import os
 import pymarc
+import warnings
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
@@ -83,6 +84,20 @@ class TestSearchRetrieveResponse(ResponseTestCase):
         data_loader = self._data_loader_mock(["response_single.xml"])
         with self.assertRaises(ValueError):
             _ = SearchRetrieveResponse(data_loader, "pymarc")
+
+    def test_invalid_leader(self):
+        # Confirm that if we pass a record with a leader length not equal to 24,
+        # that the leader field is overwritten with the default leader string
+        data_loader = self._data_loader_mock(["journal_record_leader_23.xml"])
+        res = SearchRetrieveResponse(data_loader, output_format="pymarc")
+        rec1 = res[0]
+        self.assertEqual(str(rec1.leader), "00000nam a2200289 a 4500")
+
+    def test_valid_leader(self):
+        data_loader = self._data_loader_mock(["journal_record_leader_24.xml"])
+        res = SearchRetrieveResponse(data_loader, output_format="pymarc")
+        rec1 = res[0]
+        self.assertEqual(str(rec1.leader), "01140nas a2200349  44500")
 
 class TestExplainResponse(ResponseTestCase):
     def test_response_simple_flatten(self):

@@ -27,10 +27,12 @@ class XMLParser(object):
             "ap": "http://www.archivportal.ch/srw/extension/",
             "zr": "http://explain.z3950.org/dtd/2.1/",
             "zr2": "http://explain.z3950.org/dtd/2.0/",
+            "marc": "http://www.loc.gov/MARC21/slim"
         }
         self.dict_namespaces = {
             "http://www.loc.gov/zing/srw/": "sru",
             "http://explain.z3950.org/dtd/2.1/": "zr",
+            "http://www.loc.gov/MARC21/slim": "marc",
             "info:srw/extension/2/relevancy-1.0": None,
             "http://www.archivportal.ch/srw/extension/": None,
             "http://www.loc.gov/MARC21/slim": None,
@@ -60,6 +62,12 @@ class XMLParser(object):
         if elem is None:
             return XMLNone()
         return elem
+
+    def find_and_replace(self, xml, path, string):
+        elem = self.find(xml, path)
+        elem.text = string
+        return xml
+
 
     def findall(self, xml, path):
         if isinstance(path, list):

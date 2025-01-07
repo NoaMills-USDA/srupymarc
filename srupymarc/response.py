@@ -17,6 +17,7 @@ class Response(object):
         self.records = []
         xml = self.data_loader.load()
         self._parse_content(xml)
+        warnings.simplefilter('always', UserWarning)
 
     def maybe_int(self, s):
         try:
@@ -144,6 +145,12 @@ class SearchRetrieveResponse(Response):
         new_records = []
         xml_recs = self.xmlparser.findall(xml, "./sru:records/sru:record")
         for xml_rec in xml_recs:
+            leader_string = self.xmlparser.find(xml_rec, './sru:recordData/marc:record/marc:leader').text
+            if len(leader_string) != 24:
+                replacement_leader = "00000nam a2200289 a 4500" # If updated, update test in response_test.py too
+                control_number = self.xmlparser.find(xml_rec, './sru:recordData/marc:record/marc:controlfield[@tag="001"]').text
+                warnings.warn(f"Invalid leader field for record with control number {control_number}")
+                xml_rec = self.xmlparser.find_and_replace(xml_rec, './sru:recordData/marc:record/marc:leader', replacement_leader)
             marcxmlFile = io.BytesIO(self.xmlparser.tostring(xml_rec))
             pymarc_record = pymarc.marcxml.parse_xml_to_array(marcxmlFile)[0]
             new_records.append(pymarc_record)
