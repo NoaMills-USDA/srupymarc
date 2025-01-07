@@ -4,9 +4,9 @@ import pymarc
 url = "https://na91.alma.exlibrisgroup.com/view/sru/01NAL_INST"
 query_journal = 'alma.local_field_990="Journal repository"'
 query_article = "alma.issn=1365-6937"
-maximum_records = 1
+maximum_records = 10
 sru_version = "1.2"
-start_record = 8
+start_record = 1
 
 params = {
     "url": url,
@@ -18,5 +18,5 @@ params = {
 
 records = srupymarc.searchretrieve(**params)
 
-for i in range(10):
-    print("Leader result: ", records[i].leader)
+for i in range(20):
+    print("Control number: ", records[i]["001"], " leader: ", records[i].leader)
