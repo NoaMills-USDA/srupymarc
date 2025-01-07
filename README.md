@@ -79,3 +79,12 @@ Then, move to the `tests` directory and run the tests:
 cd tests
 python -m pytest
 ```
+
+## Build distribution files
+
+If you have created code updates and would like to include the updates in the distribution files, first make sure the code passes all the tests, and then run the following from the root of this repository:
+This will create the `.whl` and `.tar.gz` distribution files in the `dist/` directory.
+```bash
+pip install build
+python -m build
+```

@@ -146,9 +146,8 @@ class SearchRetrieveResponse(Response):
         xml_recs = self.xmlparser.findall(xml, "./sru:records/sru:record")
         for xml_rec in xml_recs:
             leader_string = self.xmlparser.find(xml_rec, './sru:recordData/marc:record/marc:leader').text
-            # print("Leader string: ", leader_string, " of length: ", len(leader_string))
             if len(leader_string) != 24:
-                replacement_leader = "00000nam a2200289 a 4500"
+                replacement_leader = "00000nam a2200289 a 4500" # If updated, update test in response_test.py too
                 control_number = self.xmlparser.find(xml_rec, './sru:recordData/marc:record/marc:controlfield[@tag="001"]').text
                 warnings.warn(f"Invalid leader field for record with control number {control_number}")
                 xml_rec = self.xmlparser.find_and_replace(xml_rec, './sru:recordData/marc:record/marc:leader', replacement_leader)
