@@ -144,6 +144,10 @@ class SearchRetrieveResponse(Response):
         new_records = []
         xml_recs = self.xmlparser.findall(xml, "./sru:records/sru:record")
         for xml_rec in xml_recs:
+            leader_string = self.xmlparser.find(xml_rec, './sru:recordData/marc:record/marc:leader').text
+            print("Leader string: ", leader_string, " of length: ", len(leader_string))
+            if len(leader_string) != 24:
+                xml_rec = self.xmlparser.find_and_replace(xml_rec, './sru:recordData/marc:record/marc:leader', "REPLACEMENT LEADER      ")
             marcxmlFile = io.BytesIO(self.xmlparser.tostring(xml_rec))
             pymarc_record = pymarc.marcxml.parse_xml_to_array(marcxmlFile)[0]
             new_records.append(pymarc_record)
