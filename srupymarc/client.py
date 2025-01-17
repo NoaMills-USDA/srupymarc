@@ -90,5 +90,8 @@ class DataLoader(object):
         diag = "{http://www.loc.gov/zing/srw/diagnostic/}"
         diagnostics = self.xmlparser.find(xml, f"{sru}diagnostics/{diag}diagnostic")
         if diagnostics:
+            for child in diagnostics:
+                if child.text is None:
+                    child.text = ""
             error_msg = ", ".join([d.text for d in diagnostics])
             raise errors.SruError(error_msg)
