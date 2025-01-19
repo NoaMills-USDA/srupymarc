@@ -47,9 +47,10 @@ class Response(object):
 
 
 class SearchRetrieveResponse(Response):
-    def __init__(self, data_loader, output_format):
+    def __init__(self, data_loader, output_format, suppress_leader_warning):
         self.output_format = output_format
         super(SearchRetrieveResponse, self).__init__(data_loader)
+        self.suppress_leader_warning = suppress_leader_warning
 
     def __repr__(self):
         try:
@@ -149,7 +150,8 @@ class SearchRetrieveResponse(Response):
             if len(leader_string) != 24:
                 replacement_leader = "00000nam a2200289 a 4500" # If updated, update test in response_test.py too
                 control_number = self.xmlparser.find(xml_rec, './sru:recordData/marc:record/marc:controlfield[@tag="001"]').text
-                warnings.warn(f"Invalid leader field for record with control number {control_number}")
+                if not self.suppress_leader_warning:
+                    warnings.warn(f"Invalid leader field for record with control number {control_number}")
                 xml_rec = self.xmlparser.find_and_replace(xml_rec, './sru:recordData/marc:record/marc:leader', replacement_leader)
             marcxmlFile = io.BytesIO(self.xmlparser.tostring(xml_rec))
             pymarc_record = pymarc.marcxml.parse_xml_to_array(marcxmlFile)[0]

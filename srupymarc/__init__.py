@@ -12,7 +12,7 @@ from .client import Client  # noqa
 
 
 def searchretrieve(url, query, **kwargs):
-    search_params = ["query", "start_record", "output_format"]
+    search_params = ["query", "start_record", "output_format", "suppress_leader_warning"]
     search_kwargs = {k: v for k, v in kwargs.items() if k in search_params}
     search_kwargs["query"] = query
 
