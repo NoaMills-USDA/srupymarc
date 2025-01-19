@@ -23,7 +23,7 @@ class Client(object):
         self.record_schema = record_schema
         self.session = session or requests.Session()
 
-    def searchretrieve(self, query, start_record=1, output_format="pymarc"):
+    def searchretrieve(self, query, start_record=1, output_format="pymarc", suppress_leader_warning=True):
         valid_formats = ["flatten", "pymarc"]
         if output_format not in valid_formats:
             raise ValueError(f"Invalid output format: {output_format}")
@@ -39,7 +39,7 @@ class Client(object):
             params["recordSchema"] = self.record_schema
 
         data_loader = DataLoader(self.url, self.session, params)
-        return response.SearchRetrieveResponse(data_loader, output_format)
+        return response.SearchRetrieveResponse(data_loader, output_format, suppress_leader_warning)
 
     def explain(self):
         params = {

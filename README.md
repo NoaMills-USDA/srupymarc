@@ -39,7 +39,7 @@ info = srupymarc.explain(url)
 The `searchRetrieve` operation can be performed as follows:
 
 ```python
-records = srupymarc.searchretrieve(url, query, sru_version="1.2", maximum_records=10, output_format="pymarc", record_schema)
+records = srupymarc.searchretrieve(url, query, record_schema, sru_version="1.2", maximum_records=10, output_format="pymarc", suppress_leader_warning=True)
 ```
 The `pymarc` output format is only valid with the `marcxml` record schema. Attempting to use an alternative record schema will yield a runtime error. The `flatten` output format, however, is schema-agnostic.
 ## Example script
@@ -62,6 +62,12 @@ For example, here is how you can query all the articles that include the term `p
 Note that when you request data through `sruthi`, it will first request the number of records specified by the `maximum_records` parameter. If you iterate through the returned records, then it will continuously make new API calls to request subsequent records until all the matches have been exhausted. Be wary of this if your query matches a large number of records.
 
 You can update the output format specification by modifying the `alma_sru_config.toml` file. Valid output format designations are "flatten" for flattened dictionaries, and "pymarc" for pymarc records.
+
+## Suppressing the leader warning
+
+The `suppress_leader_warning` parameter is set to `True` by default. 
+If you are using `pymarc` as your output format, and one of the records you pull contains a `leader` field of a length other than 24, then `srupymarc` will automatically replace the leader field with a default leader so that pymarc can parse the record. 
+If you would like to see this warning, set the `suppress_leader_warning` parameter to `False`.
 
 ## Testing
 
